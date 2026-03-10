@@ -7,7 +7,7 @@ Claude-first plugin for analyzing repository skills, agents, and instruction fil
 ### Claude Code Plugin Marketplace
 
 ```bash
-/plugin marketplace add umitozdemir/skill-accuracy-plugin
+/plugin marketplace add umitozdemirf/skill-accuracy-plugin
 /plugin install skill-accuracy@umitozdemir
 ```
 
@@ -19,12 +19,12 @@ Add this to project-level `.claude/settings.json`:
 {
   "extraKnownMarketplaces": {
     "skill-accuracy": {
-      "source": {
-        "source": "github",
-        "repo": "umitozdemir/skill-accuracy-plugin"
+        "source": {
+          "source": "github",
+          "repo": "umitozdemirf/skill-accuracy-plugin"
+        }
       }
     }
-  }
 }
 ```
 
