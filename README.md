@@ -8,7 +8,7 @@ Claude-first plugin for analyzing repository skills, agents, and instruction fil
 
 ```bash
 /plugin marketplace add umitozdemirf/skill-accuracy-plugin
-/plugin install skill-accuracy@umitozdemir
+/plugin install skill-accuracy@umitozdemirf
 ```
 
 ### Team Rollout
