@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "skill-accuracy",
-      "source": ".",
+      "source": "./skill-accuracy-plugin",
       "description": "Analyze repository skills, agents, and instruction files for Claude Code."
     }
   ]

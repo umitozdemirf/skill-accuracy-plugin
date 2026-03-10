@@ -39,8 +39,8 @@ Add this to project-level `.claude/settings.json`:
 ## Package Layout
 
 - `.claude-plugin/marketplace.json`
-- `.claude-plugin/plugin.json`
-- `skills/skill-accuracy/SKILL.md`
+- `skill-accuracy-plugin/.claude-plugin/plugin.json`
+- `skill-accuracy-plugin/skills/skill-accuracy/SKILL.md`
 - bundled `references/`, `scripts/`, and `examples/`
 
 ## Optional Helper Scripts
