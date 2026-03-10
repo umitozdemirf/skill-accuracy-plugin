@@ -1,6 +1,6 @@
 # skill-accuracy
 
-Claude-first plugin for analyzing repository skills, agents, and instruction files with automatic discovery, explainable scoring, and scoreboard-style reports.
+Claude-first plugin with Codex support for analyzing repository skills, agents, and instruction files with automatic discovery, explainable scoring, and scoreboard-style reports.
 
 ## Install
 
@@ -30,6 +30,21 @@ Add this to project-level `.claude/settings.json`:
 }
 ```
 
+### Codex
+
+Codex works best through the repository-level [AGENTS.md](/Users/umitozdemir/proj/skill-analysis/skill-accuracy-plugin/AGENTS.md) plus the bundled Codex skill tree under [codex/skills](/Users/umitozdemir/proj/skill-analysis/skill-accuracy-plugin/codex/skills).
+
+Recommended install targets:
+
+- project-local vendor path
+- `~/.codex/skills/skill-accuracy/`
+
+Minimal install flow:
+
+```bash
+bash scripts/install_codex.sh --project "$(pwd)"
+```
+
 ## What It Does
 
 - discovers instruction assets in a repository
@@ -37,6 +52,7 @@ Add this to project-level `.claude/settings.json`:
 - analyzes likely weaknesses
 - produces a human-readable scoreboard
 - summarizes the highest-priority fixes
+- supports both Claude-style repo assets and Codex repo/user skill surfaces
 
 ## Usage Examples
 
@@ -96,11 +112,33 @@ Expected behavior:
 
 Use this when you want a faster structured pass.
 
+### Codex quick analysis
+
+```text
+run a quick-analysis on this repo and my Codex skills
+```
+
+Expected behavior:
+
+- checks repo-local Codex surfaces first:
+  - `AGENTS.md`
+  - `SKILL.md`
+  - `skills/`
+- also checks user-global Codex skills:
+  - `~/.codex/skills/`
+- groups results into:
+  - `Repo Targets`
+  - `User Skill Targets`
+
+Use this when you want Codex-aware discovery instead of Claude-only repo scanning.
+
 ## Package Layout
 
 - `.claude-plugin/marketplace.json`
 - `skill-accuracy-plugin/.claude-plugin/plugin.json`
 - `skill-accuracy-plugin/skills/skill-accuracy/SKILL.md`
+- `codex/skills/skill-accuracy/SKILL.md`
+- `AGENTS.md`
 - bundled `references/`, `scripts/`, and `examples/`
 
 ## Optional Helper Scripts
@@ -111,4 +149,8 @@ The packaged skill includes helper scripts for case generation and repeated-tria
 - `scripts/run_claude_trials.go`
 - `scripts/summarize_runs.go`
 
-The primary interface is still Claude invoking the installed `skill-accuracy` plugin.
+Repository-level helper scripts:
+
+- `scripts/install_codex.sh`
+
+The primary interfaces are Claude marketplace install and Codex `AGENTS.md` + skill-tree integration.
