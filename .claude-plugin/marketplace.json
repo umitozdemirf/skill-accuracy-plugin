@@ -1,0 +1,13 @@
+{
+  "name": "umitozdemir",
+  "owner": {
+    "name": "Umit Ozdemir"
+  },
+  "plugins": [
+    {
+      "name": "skill-accuracy",
+      "source": ".",
+      "description": "Analyze repository skills, agents, and instruction files for Claude Code."
+    }
+  ]
+}
