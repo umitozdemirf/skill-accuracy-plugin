@@ -1,8 +1,0 @@
-{
-  "name": "skill-accuracy",
-  "description": "Claude-first repository instruction analysis skill pack.",
-  "version": "0.1.0",
-  "author": {
-    "name": "Umit Ozdemir"
-  }
-}
