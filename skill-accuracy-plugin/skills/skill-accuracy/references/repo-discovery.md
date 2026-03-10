@@ -6,6 +6,18 @@ Use this reference when `skill-accuracy` needs to audit a repository instead of 
 
 Find likely instruction assets with enough confidence that the resulting scoreboard remains useful and explainable.
 
+## Quick Analysis First Pass
+
+When the caller explicitly asks for `quick-analysis` in a Claude Code repository, check standard instruction surfaces before generic discovery:
+
+- `CLAUDE.md`
+- `.claude/commands/`
+- `.claude/agents/`
+- `skills/`
+
+If these paths exist, use them as the target set and stop there.
+Only fall back to the broader discovery tiers below when none of these surfaces exist.
+
 ## Discovery Tiers
 
 ### High-confidence discovery

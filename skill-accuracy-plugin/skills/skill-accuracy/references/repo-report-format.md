@@ -1,6 +1,6 @@
 # Repo Report Format
 
-Use this reference for repo-scan outputs.
+Use this reference for repo-scan and quick-analysis outputs.
 
 ## Output Channels
 
@@ -25,16 +25,38 @@ Keep terminal output short and decision-oriented:
 - strongest targets
 - top cross-repo anti-patterns
 
+The first table shown to the user should be the main scoreboard for scoreable targets. Do not start with a discovery-only table that omits `overall_score`.
+
 ## Markdown Report
 
 Use this structure:
 
 1. `Repo Summary`
-2. `Discovery Overview`
-3. `Scoreboard`
-4. `Per-Target Findings`
-5. `Cross-Repo Anti-Patterns`
-6. `Recommended Next Actions`
+2. `Possible Targets Not Scored`
+3. `Per-Target Findings`
+4. `Cross-Repo Anti-Patterns`
+5. `Recommended Next Actions`
+
+## Quick Analysis Report
+
+Use this shorter structure:
+
+1. `Quick Scoreboard`
+2. `Short Findings`
+3. `Next Actions`
+
+Quick-analysis should favor brevity over exhaustive justification.
+
+Recommended quick scoreboard fields:
+
+- `path`
+- `type`
+- `confidence`
+- `overall`
+- `clarity`
+- `testability`
+- `risk`
+- `priority`
 
 ## Scoreboard Fields
 
@@ -63,6 +85,26 @@ The summary should include:
 - `strongest_targets`
 - `common_anti_patterns`
 - `recommended_actions`
+
+For scoreable targets, `Repo Summary` must render a table using the scoreboard fields directly:
+
+- `path`
+- `type`
+- `confidence`
+- `overall_score`
+- `clarity`
+- `testability`
+- `consistency_risk`
+- `honesty_conflict_risk`
+- `format_control`
+- `priority`
+
+Items that are not instruction assets or are not scoreable should be moved to `Possible Targets Not Scored` with:
+
+- `path`
+- `type`
+- `confidence`
+- `reason_not_scored`
 
 ## JSON Contract
 

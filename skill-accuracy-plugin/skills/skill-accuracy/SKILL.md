@@ -70,7 +70,31 @@ In this mode:
 - analyze each target conservatively
 - produce a repo-level scoreboard and priority summary
 
-### Mode 3: Rewrite
+### Mode 3: Quick Analysis
+
+Use when the user wants:
+
+- a faster structured pass
+- analysis focused on standard Claude Code instruction surfaces
+- a short scoreboard instead of a deep report
+
+In this mode:
+
+- check standard Claude Code paths first
+- avoid broad discovery when standard paths already exist
+- use lighter scoring and shorter findings
+- produce a short scoreboard, short findings, and one-line next actions
+
+Standard Claude Code paths for quick analysis:
+
+- `CLAUDE.md`
+- `.claude/commands/`
+- `.claude/agents/`
+- `skills/`
+
+If none of these exist, fall back to conservative repo discovery.
+
+### Mode 4: Rewrite
 
 Use when the user wants the target asset updated rather than only reviewed.
 
@@ -88,7 +112,7 @@ Typical rewrite requests:
 - "fix only the high-impact issues"
 - "make this skill more deterministic"
 
-### Mode 4: Compare
+### Mode 5: Compare
 
 Use when the user wants to know whether one version is better than another.
 
@@ -99,7 +123,7 @@ In this mode:
 - compare predicted or observed scores
 - summarize what changed materially
 
-### Mode 5: Repeated prompt trials
+### Mode 6: Repeated prompt trials
 
 Use when the user wants consistency measurement inside Claude Code and repeated testing is practical.
 
@@ -110,7 +134,7 @@ In this mode:
 - store raw outputs
 - compare outputs for adherence and consistency
 
-### Mode 6: Workspace task trials
+### Mode 7: Workspace task trials
 
 Use when the target skill or agent changes files, executes commands, or performs multi-step work.
 
@@ -198,10 +222,51 @@ Typical Claude Code requests that should trigger this skill:
 - `Use skill-accuracy to scan this repo for skill and agent files and rank them by reliability`
 - `Use skill-accuracy to audit this repo and show me the most brittle instruction files`
 - `Use skill-accuracy to scan only ./agents and ./skills and summarize the findings`
+- `Use skill-accuracy to run a quick analysis on this Claude Code repo`
+- `Use skill-accuracy to check CLAUDE.md, commands, agents, and skills only`
 
 ## Repo Discovery Workflow
 
 When the user asks for a repo audit, prefer a conservative hybrid discovery strategy.
+
+## Quick Analysis Workflow
+
+When the user asks for `quick-analysis`, do not start with broad discovery.
+
+### Standard Claude Code surfaces
+
+Check these locations first:
+
+- `CLAUDE.md`
+- `.claude/commands/`
+- `.claude/agents/`
+- `skills/`
+
+Treat these as the primary target set for quick analysis.
+
+### Fallback behavior
+
+Only if none of the standard Claude Code surfaces exist:
+
+- run conservative fallback discovery
+- keep the scope narrow
+- do not scan arbitrary docs aggressively
+
+### Quick output contract
+
+For each scoreable target in quick analysis, return:
+
+- a short scoreboard row
+- 2 to 4 short findings
+- one-line `next_action`
+
+Use a lighter metric set:
+
+- `overall`
+- `clarity`
+- `testability`
+- `risk`
+- `priority`
 
 ### High-confidence discovery
 
@@ -309,6 +374,7 @@ For repo scan mode, the user-facing report should be a scoreboard, not just a li
 
 Each scoreboard row should include:
 
+- `path`
 - `overall_score`
 - `confidence`
 - `type`
@@ -328,6 +394,8 @@ At repo level, also include:
 - strongest targets
 - common anti-patterns
 - recommended next actions
+
+For scoreable targets, the first repo-level table must already include these scoreboard fields. Do not hide `overall_score` only in later per-target sections.
 
 Use [`references/repo-report-format.md`](references/repo-report-format.md) for the markdown and JSON report contract.
 
@@ -413,7 +481,7 @@ The scripts are helpers, not the primary interface. The primary interface is Cla
 When this skill is invoked inside Claude Code, follow this sequence:
 
 1. Resolve the target skill or agent.
-2. Determine the requested mode: analyze, repo scan, rewrite, compare, repeated trials, workspace trials, or scan.
+2. Determine the requested mode: analyze, repo scan, quick-analysis, rewrite, compare, repeated trials, workspace trials, or scan.
 3. Inspect the target instructions and extract concrete rules.
 4. If the target is a repo, discover and classify candidate instruction assets first.
 5. Generate a compact test set when evaluation is needed.
@@ -451,6 +519,12 @@ Choose `repo scan` when:
 - the user asks for a repository audit
 - the user wants automatic discovery of instruction assets
 - the user wants a scoreboard across multiple targets
+
+Choose `quick-analysis` when:
+
+- the user asks for a fast structured pass
+- the user wants standard Claude Code paths checked first
+- speed matters more than exhaustive discovery
 
 Choose `execution` when:
 
@@ -521,11 +595,33 @@ For compare passes, explicitly include:
 For repo scan passes, explicitly include:
 
 1. `Repo summary`
-2. `Discovery overview`
-3. `Scoreboard`
-4. `Per-target findings`
-5. `Cross-repo anti-patterns`
-6. `Recommended next actions`
+2. `Possible targets not scored`
+3. `Per-target findings`
+4. `Cross-repo anti-patterns`
+5. `Recommended next actions`
+
+In `Repo summary`, render the main scoreboard first for all scoreable targets with columns in this order:
+
+- `Path`
+- `Type`
+- `Confidence`
+- `Overall`
+- `Clarity`
+- `Testability`
+- `Consistency Risk`
+- `Honesty Conflict Risk`
+- `Format Control`
+- `Priority`
+
+Non-scoreable items such as config files, plan docs, and spec docs must not replace the main scoreboard. List them afterwards under `Possible targets not scored` with a brief reason.
+
+For quick-analysis passes, explicitly include:
+
+1. `Quick scoreboard`
+2. `Short findings`
+3. `Next actions`
+
+Keep quick-analysis short. Do not expand into full extracted-rule tables unless the user asks to deepen the analysis.
 
 ## Constraints
 
