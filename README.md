@@ -11,6 +11,8 @@ Claude-first plugin for analyzing repository skills, agents, and instruction fil
 /plugin install skill-accuracy@umitozdemirf
 ```
 
+If the skill does not appear immediately after install, start a new Claude session or restart Claude. Some sessions do not reload installed plugins dynamically.
+
 ### Team Rollout
 
 Add this to project-level `.claude/settings.json`:
